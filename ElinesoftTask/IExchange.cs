@@ -8,6 +8,7 @@ namespace ElinesoftTask
 {
     public interface IExchange
     {
-        decimal GetPrice(string pair);
+        decimal Price { get; }
+        void Subscribe(string pair);
     }
 }
