@@ -7,19 +7,20 @@ namespace ElinesoftTask
         BybitExchange bybit;
         KucoinExchange kucoin;
 
-        object lockObj = new object();
-
         public Form1()
         {
             InitializeComponent();
-            pairSelectionBox.Items.AddRange(new object[] { "BTCUSDT", "ETHUSDT" });
+            pairSelectionBox.Items.AddRange(AllPairs.Pairs);
+
             binance = new BinanceExchange();
             bitget = new BitgetExchange();
             bybit = new BybitExchange();
             kucoin = new KucoinExchange();
+
+            InitTimer();
         }
 
-        void UpdatePrice()
+        void UpdatePrice(object s, EventArgs e)
         {
             binancePrice.Invoke(()=> binancePrice.Text = binance.Price.ToString());
             bitgetPrice.Invoke(() => bitgetPrice.Text = bitget.Price.ToString());
@@ -27,16 +28,27 @@ namespace ElinesoftTask
             kucoinPrice.Invoke(() => kucoinPrice.Text = kucoin.Price.ToString());
         }
 
+        private void InitTimer()
+        {
+            var timer1 = new System.Timers.Timer();
+            timer1.Elapsed += new System.Timers.ElapsedEventHandler(UpdatePrice);
+            timer1.Interval = 100;
+            timer1.Start();
+        }
+
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var p = pairSelectionBox.SelectedItem.ToString();
-            binance.Subscribe(p);
-            //bitget.Subscribe(p);
-            //bybit.Subscribe(p);
-            //kucoin.Subscribe(p);
+            binance = new BinanceExchange();
+            bitget = new BitgetExchange();
+            bybit = new BybitExchange();
+            kucoin = new KucoinExchange();
 
-            var timer = new System.Threading.Timer(new TimerCallback((obj) => UpdatePrice()), 0, 0, 5000);
-            
+            var p = pairSelectionBox.SelectedItem.ToString();
+
+            binance.Subscribe(p.Replace("-",""));
+            bitget.Subscribe(p.Replace("-", ""));
+            bybit.Subscribe(p.Replace("-", ""));
+            kucoin.Subscribe(p);
         }
     }
 }

@@ -18,8 +18,6 @@ namespace ElinesoftTask
             {
                 Price = update.Data.LastPrice;
             });
-            //var tickets = await socketClient.SpotApi.ExchangeData.GetExchangeInfoAsync();
-            //var list = tickets.Data.Result.Symbols.Select(s => s.Name).ToList();
         }
     }
 }

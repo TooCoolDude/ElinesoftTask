@@ -17,7 +17,7 @@ namespace ElinesoftTask
             var socketClient = new KucoinSocketClient();
             var tickerSubscriptionResult = socketClient.SpotApi.SubscribeToTickerUpdatesAsync(pair, (update) =>
             {
-                Price = update.Data.LastPrice;
+                Price = (decimal)update.Data.LastPrice;
             });
         }
     }
